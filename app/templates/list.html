@@ -1,0 +1,46 @@
+﻿<div class="slider">
+    <div class="listing">
+        <div class="post" ng-repeat="post in posts">
+            <div id="result-{{ post.id}}">
+            </div>
+            <div class="row">
+                <div class="span12">
+                    <section id="post-{{ post.id }}">
+                        <div class="post_header">
+                            <h1><a href="{{  }}" data-pjax="{{ }}">{{ post.title }}</a></h1>
+                        </div>
+                        <p style="color: #999;">Posted: {{ post.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                            {% if config.get('SHOW_VIEWS_ON_HOMEPAGE','Fasle') == 'True' %},  {{ post.views }} views{% endif %}
+                            {% if is_admin %}
+                            {% if config.get('POST_CONTENT_ON_HOMEPAGE','Fasle') == 'True' %}
+                            <a href="{{ url_for('edit', post_id=post.id) }} " data-pjax="{{ url_for('edit', post_id=post.id) }}"><span class="label label-inverse">edit</span></a>
+                            <a href="#" onClick="sendMail('{{ post.id }}','{{ post.title }}');return false"><span class="label label-inverse">send to evernote</span></a>
+                            {% endif%}
+                            {% endif%}
+                        </p>
+                        {% if config.get('POST_CONTENT_ON_HOMEPAGE','Fasle') == 'True' %}
+                            <div id="content-{{ post.id }}">
+                            {{ post.render_content()|safe }}
+                            </div>
+                        {% endif %}
+                    </section>
+                    <hr>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div><!--end listing-->
+</div><!--end slider-->
+<ul class="pager">
+    {% if current_page > 0 %}
+        <li class="previous">
+            <a href="{{ url_for("index", page=current_page - 1) }}">&larr; Previous</a>
+        </li>
+    {% endif %}
+
+    {% if is_more %}
+        <li class="next">
+            <a href="{{ url_for("index", page=current_page + 1) }}">Next  &rarr;</a>
+        </li>
+    {% endif %}
+</ul>

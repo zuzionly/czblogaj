@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}<title>{{ config.BLOG_TITLE }}</title>{% endblock %}
+
+{% block content %}
+<div class="slider">
+    <div class="alert alert-info">
+        Hello.
+        //To Do means never do...
+        <br>
+    </div>
+    <hr>
+    <!--disqus section-->
+    <div id="contact">
+        <ul>
+            {% if config.GITHUB_USERNAME %}
+                <li><p><a href="https://github.com/{{ config.GITHUB_USERNAME }}/">Github</a></p></li>
+            {% endif %}
+            {% if config.CONTACT_EMAIL %}
+                <li><p><p><a href="mailto:{{ config.CONTACT_EMAIL }}?subject:Howdy">Email me</a></p></li>
+            {% endif %}
+            {% if config.TWITTER_HANDLE %}
+                <li><p><a href="https://twitter.com/{{ config.TWITTER_HANDLE }}/">Twitter</a></p></li>
+            {% endif %}
+            {% if config.GOOGLE_PLUS_PROFILE %}
+                <li><p><a href="https://plus.google.com/{{ config.GOOGLE_PLUS_PROFILE }}/posts">Google+</a></p></li>
+            {% endif %}
+            <li>
+                <p><a href="{{ url_for('feed') }}">Feed</a></p>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

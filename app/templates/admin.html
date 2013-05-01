@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}<title>Admin panel</title>{% endblock%}
+
+{% block content%}
+<div class="slider">
+    <div class="row">
+        <div id="drafts" class="span4">
+            <h1>Drafts</h1>
+            <form id=new_post action="{{ url_for('new_post') }}" method="post">
+                <div class="input-append">
+                    <input class="input-large" name="post_title" id="post_title" type="text" size=30 placeholder="Start typing an idea here">
+                    <button class="btn btn-inverse" onclick="$('#new_post').submit()">New draft</a>
+                </div>
+            </form>
+            <table class="table-hover table table-striped table-bordered table-condensed">
+              <caption></caption>
+              <tbody>
+                {% for draft in drafts %}
+                <tr id="draft-{{ draft.id }}">
+                  <td class="span3"><a href="{{ url_for('edit', post_id=draft.id) }}" data-pjax="{{ url_for('edit', post_id=draft.id) }}"><span class="label label-inverse">{{ draft.title }}</span></span></a></td>
+                  <td class="span1">
+                      <span class="links">
+                          <a href="#" data-id={{ draft.id }}  class="confirm-delete" ><span class="badge badge-inverse">×</span></a>
+                      </span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div><!-- end drafts-->
+        <div class="span1"></div>
+        <div id="published" class="span6">
+        <h1>Published</h1>
+        <table class="table-hover table table-striped table-bordered table-condensed">
+          <caption></caption>
+          <tbody>
+            {% for post in posts %}
+            <tr id="post-{{ post.id }}">
+              <td class="span6"><a href="{{ url_for('edit', post_id=post.id) }}" data-pjax="{{ url_for('edit', post_id=post.id) }}"><span class="label label-inverse">{{ post.title }}</span></span></a></td>
+              <td class="span2">
+                      <a href="{{ url_for('view_post_slug', slug=post.slug) }}" class="admin-view"><span class="label label-inverse">view</span></a>
+                      <a href="#" data-id={{ post.id }} class="confirm-delete"><span class="badge badge-inverse">×</span></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div><!-- end published-->
+    </div><!--end row inner -->
+    <div id="modal-from-delete" class="modal hide fade">
+        <div class="modal-header">
+          <a href="#" class="close">&times;</a>
+          <h3>Delete URL</h3>
+        </div>
+        <div class="modal-body">
+          <p>You are about to delete one track url, this procedure is irreversible.</p>
+          <p>Do you want to proceed?</p>
+        </div>
+        <div class="modal-footer">
+          <a href="delete.php?ref=" class="btn danger">Yes</a>
+          <a href="javascript:$('#modal-from-delete').modal('hide')" class="btn secondary">No</a>
+        </div>
+    </div>
+</div>
+{% endblock%}

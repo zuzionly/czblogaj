@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}<title>{{ post.title }} - {{ config.BLOG_TITLE }}</title>
+<!--wmd editor-->
+<link rel="stylesheet" type="text/css" href="../static/css/wmd.css" />
+<script type="text/javascript" src="../static/js/showdown.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="slider">
+    <div class="container">
+        <form accept-charset="UTF-8" action="" class="form-horizontal" id="edit_post" method="post">
+            <div class="row-fluid">
+                <div id="result">
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span1 offset1">
+                    <span class="label label-inverse">Titile:</span>
+                </div>
+                <div class="span7">
+                    <div class="expandingArea text-title">
+                        <input type="text" class="input-block-level" id="post_title" name="post_title" placeholder="Title here" value="{{ post.title }}">
+                        </input>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span1 offset1">
+                    <span class="label label-inverse">Options:</span>
+                </div>
+                <div class="span7">
+                    <div class="row-fluid">
+                        <div class="nav-pills span12" >
+                            <div class="input-append">
+                                <a class="btn btn-inverse add-on">
+                                    <i class="icon-trash icon-white"></i>
+                                </a>
+                                <input name="post_status" type="hidden" value="0" /><input id="post_status" name="post_status" type="checkbox" value="1" {% if post.draft %}checked{% endif %} />
+                            </div>
+                            <div class="input-append">
+                                <input style="display:none" id="fileName" name="files[]" type="file" multiple="multiple">
+                                <a class="btn btn-inverse add-on" onclick="$('input#fileName').click();"><i class="icon-file icon-white"></i>
+                                </a>
+                                <input id="attach" class="input" type="text">
+                                <button id="uploadBtn" class="btn btn-inverse" onClick="uploadFile();return false">upload</button>
+                            </div>
+                            {% if post.draft %}
+                            <a class="btn btn-inverse" id="preview" href="#" onclick="issueSaveAjax({{ post.id }}, true); return false;"
+                            target="_blank">
+                                Preview
+                            </a>
+                            {% else %}
+                            <a class="btn btn-inverse" id="view" href="{{  url_for('view_post_slug', slug=post.slug) }}" data-pjax="{{  url_for('view_post_slug', slug=post.slug) }}"
+                            target="_blank">
+                                View live
+                            </a>
+                            {% endif%}
+                            <a class="btn btn-inverse" href="{{ url_for('delete', post_id=post.id, next="admin") }}" data-pjax="{{ url_for('delete', post_id=post.id, next="admin") }}">
+                                Delete
+                            </a>
+                            <button class="btn btn-inverse" onclick="$('#edit_post').submit();">
+                                Save
+                            </button>
+                            <button class="btn btn-inverse" onclick="resetProgress();return false;">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div id="progressBar">
+                            <div class="progress progress-striped active" hidden>
+                              <div class="bar" style="width:0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span1 offset1">
+                    <span class="label label-inverse">Content:</span>
+                </div>
+                <div class="span7">
+                    <div class="row-fluid">
+                        <div class="nav-pills span12" >
+                            <div id="wmd-button-bar" class=""></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span7">
+                    <div class="expandingArea text-content" id="edit_post_area">
+                        <textarea rows="20" class="input-block-level wmd-panel" id="wmd-input" name="post_content" placeholder="Write post here">{{ post.text }}</textarea>
+                    </div>
+                    <br/>
+                    <div id="wmd-preview" class="wmd-panel"></div>
+                    <br/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% block js %}
+{% if post.draft %}
+<script type="text/javascript">
+    function SaveTick() {
+        issueSaveAjax({{ post.id }},false);
+        setTimeout("SaveTick()", 10000)
+    };
+    $(function(){
+        setTimeout("SaveTick();", 10000);
+    })
+</script>
+{% endif %}
+{% endblock %}
+<script type="text/javascript" src="../static/js/wmd.js"></script>
+{% endblock %}

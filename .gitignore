@@ -1,0 +1,9 @@
+*.pyc
+*.db
+*.*~
+*.log
+/settings_core.py
+/settings_custom.py
+cache/
+venv/
+static/file/

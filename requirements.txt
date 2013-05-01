@@ -1,0 +1,9 @@
+Flask
+SQLAlchemy
+Flask-SQLAlchemy
+python-dateutil
+simplejson
+Flask-Restless
+markdown
+Flask-Mail
+gunicorn

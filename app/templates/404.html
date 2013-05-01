@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}<title>{{ config.BLOG_TITLE }}</title>{% endblock %}
+
+
+
+{% block content %}
+<div class="slider">
+    <div class="alert alert-error">
+        404... you know it...
+        <br>
+        back to <a href="{{ url_for("index") }}">home page</a>
+        <br>
+    </div>
+</div>
+{% endblock %}
