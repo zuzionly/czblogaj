@@ -2,8 +2,12 @@
 *.db
 *.*~
 *.log
+*.sublime-project
+*.sublime-workspace
 /settings_core.py
 /settings_custom.py
 cache/
 venv/
 static/file/
+/.idea
+/.codeintel
