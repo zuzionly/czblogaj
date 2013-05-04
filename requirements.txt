@@ -6,4 +6,5 @@ simplejson
 Flask-Restless
 markdown
 Flask-Mail
+xpinyin
 gunicorn
